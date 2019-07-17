@@ -28,5 +28,5 @@ void	equation(int n)
 		if (b < 10 && c < 10)
 			printf("A = %d, B = %d, C = %d\n", a, b, c);
 		a++;
-	}
+    }
 }
