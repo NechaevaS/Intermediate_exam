@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: exam <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 09:42:14 by exam              #+#    #+#             */
-/*   Updated: 2019/07/09 12:39:35 by exam             ###   ########.fr       */
+/*   Updated: 2019/07/17 12:30:11 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void  fill(char **tab, t_point size, t_point begin, char c)
 	if(tab[y][x] != c)
 		return ;
     tab[y][x] = 'F';
-		
+
 	new.x = x + 1;
 	new.y = y;
 	fill(tab, size, new, c);
