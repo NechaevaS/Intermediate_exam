@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 15:43:30 by snechaev          #+#    #+#             */
-/*   Updated: 2019/07/11 18:16:52 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/07/17 10:18:03 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,18 @@ struct s_stack *init(void)
 	return (stack);
 }
 
-void	*pop(struct s_stack *stack)
+void *pop(struct s_stack *stack)
 {
-	struct s_node *item;
+	struct s_node *node;
+	void *content;
 
-	if(isEmpty(stack) == 0)
-	{
-		item = stack->top;
-		stack->top = stack->top->next;
-		return (item->content);
-	}
-	else
-	{
+	if (!stack->top)
 		return (NULL);
-	}
+	content = stack->top->content;
+	node = stack->top;
+	stack->top = node->next;
+	free(node);
+	return (content);
 }
 
 void	push(struct s_stack *stack, void *content)
@@ -83,7 +81,7 @@ void	*peek(struct s_stack *stack)
 int isEmpty(struct s_stack *stack)
 {
 	if (stack->top == NULL)
-		return (0);
+		return (1);
 	else
-		return(1);
+		return(0);
 }

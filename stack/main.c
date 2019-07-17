@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 15:06:55 by snechaev          #+#    #+#             */
-/*   Updated: 2019/07/11 18:21:02 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/07/17 10:20:28 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ void	print_st(struct s_stack *stack)
 	return ;
 	while(t)
 	{
-		printf("%d\n", *((int *)t->content));
+		printf("%d\n", (int)(t->content));
 		t = t->next;
 	}
+	printf("\n");
 }
+
 struct s_stack *init(void);
 
 void *pop(struct s_stack *stack);
@@ -47,18 +49,23 @@ int isEmpty(struct s_stack *stack);
 
 int main()
 {
-	struct s_stack	*stack;
-	int a = 2;
-	int b = 16;
-	int c = 8;
+	struct s_stack	*stack0;
+	struct s_stack	*stack3;
 
-	stack = init();
-	printf("is_em %d\n", isEmpty(stack));
-	push(stack, &a);
-	push(stack, &b);
-	push(stack, &c);
-	printf("is_em %d\n", isEmpty(stack));
-	print_st(stack);
+	stack3 = init();
+	stack0 = init();
+	printf("stack0 %p top %p\n", stack0, stack0->top);
+	printf("stack0 %p top %p\n", stack3, stack0->top);
+	printf("is_em %d\n", isEmpty(stack0));
+	push(stack3, (void *)2);
+	push(stack3, (void *)3);
+	push(stack3, (void *)4);
+	printf("is_em %d\n", isEmpty(stack3));
+	print_st(stack3);
+	printf("peek %d\n", (int)peek(stack3));
+	printf("pop %d\n", (int)pop(stack3));
+	printf("peek %d\n", (int)peek(stack3));
+
 
 	return (0);
 }
