@@ -62,7 +62,7 @@ void print_right(struct s_node *root, struct s_node *curr)
 void perimeter(struct s_node *root)
 {
 	print_left(root);
-	print_child(root->right);
+	print_child(root);
 	print_right(root, root->right);
 	printf("\n");
 }
