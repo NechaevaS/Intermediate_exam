@@ -30,6 +30,7 @@ int ft_strncmp(char *s1, char *s2, int len)
 		return (0);
 	return (s1[i] - s2[i]);
 }
+
 char *find_substr(char *s, char *sub, int len_sub)
 {
 	int i = 0;
