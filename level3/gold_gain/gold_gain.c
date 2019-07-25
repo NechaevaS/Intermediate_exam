@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 16:08:47 by snechaev          #+#    #+#             */
-/*   Updated: 2019/07/17 17:27:51 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/07/25 15:01:28 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,10 @@ int	**create_arr(int n)
 	return (arr);
 }
 
-void free_arr(int **arr, int n)
-{
-	int i = 0;
-	while(i < n + 2)
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
-
 int compare3(int a, int b, int c)
 {
 	int res = 0;
-	
+
 	if (a > b)
 		res = a;
 	else
@@ -70,7 +59,7 @@ int compare3(int a, int b, int c)
 	if (res > c)
 		return (res);
 	else
-		return (res = c);	
+		return (res = c);
 }
 
 int	gold_gain(int **mine, int n)
@@ -108,6 +97,5 @@ int	gold_gain(int **mine, int n)
 			res = arr[i][j];
 		i++;
 	}
-	free_arr(arr, n);
 	return (res);
 }

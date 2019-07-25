@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 16:08:47 by snechaev          #+#    #+#             */
-/*   Updated: 2019/07/25 14:49:11 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/07/25 15:37:31 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void perimeter(struct s_node *root)
 {
 	if (!root)
 		return ;
-	printf(" %d", root->value);
+	printf("%d", root->value);
 	if (root->left || root->right)
 	{
 		print_left(root->left);
