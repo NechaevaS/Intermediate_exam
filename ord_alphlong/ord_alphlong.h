@@ -13,25 +13,22 @@
 #ifndef ORD_ALPHLONG_H
 # define ORD_ALPHLONG_H
 
-typedef struct s_node
-{
-	char			*data;
-	int				len;
-	struct s_node	*next;
-}					t_elem;
-
-typedef struct s_queue
-{
-	struct s_node	*first;
-	struct s_node	*last;
-}					t_queue;
-// typedef struct		s_list
+// typedef struct s_node
 // {
-// 	char			*word;
+// 	char			*data;
 // 	int				len;
-// 	struct s_list	*next;
-// 	struct s_list	*first;
-// 	struct s_list	*last;
-// }					t_list;
+// 	struct s_node	*next;
+// }					t_elem;
+
+// typedef struct s_queue
+// {
+// 	struct s_node	*first;
+// 	struct s_node	*last;
+// }					t_queue;
+typedef struct
+{
+	char			*word;
+	int				len;
+}					t_words;
 
 #endif

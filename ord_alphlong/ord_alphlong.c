@@ -14,47 +14,21 @@
 #include <unistd.h>
 #include "ord_alphlong.h"
 
-t_list *create_list(char *str)
+int is_wsps(char c)
 {
-	int i = 0;
-	int j;
-	t_list *head;
-	t_list *current;
-	int n = count_words(str);
-
-	current = head;
-	while (str[i] != '\0')
-	{
-		if ((str[i - 1] == ' ' || str[i - 1] == '\t' || i == 0)
-		&& (str[i] != ' ' && str[i] != '\t'))
-		{
-			t_list *list = malloc(sizeof(t_list));
-			j = 0;
-			while (str[i] != ' ' && str[i] != '\t')
-			{
-				current->word[j] = str[i];
-				i++;
-				j++;
-			}
-			current->word[j] = '\0';
-			i--;
-			current->len = j;
-			current = current->next;
-		}
-		i++;
-	}
-	return (head);
+	return (c == ' ' || c == '\t');
 }
+
 int cmp_str(char *s1, char *s2)
 {
 	int i = 0;
-	char  tmp1;
+	char tmp1;
 	char tmp2;
 	int res;
 
-	while (s1[i] || s2[i])
+	while (s1[i] && s2[i])
 	{
-		if ((s1[i] > 'A' && s1[i]< 'Z') && (s2[i] > 'A' && s2[i]< 'Z'))
+		if ((s1[i] > 'A' && s1[i] < 'Z') && (s2[i] > 'A' && s2[i] < 'Z'))
 		{
 			tmp1 = s1[i] + 32;
 			tmp2 = s2[i] + 32;
@@ -64,65 +38,29 @@ int cmp_str(char *s1, char *s2)
 			tmp1 = s1[i];
 			tmp2 = s2[i];
 		}
-		if (tmp1 < tmp2)
-			return (-1);
-		else if (tmp1 > tmp2)
+		if (tmp1 != tmp2)
+		{
+			res = tmp2 - tmp1;
+			return (res);
+		}
+		i++;
+	}
+	res = tmp2 - tmp1;
+	return (res);
+}
+
+int is_less(t_words a, t_words b)
+{
+	if (a.len < b.len)
+		return (1);
+	if (a.len == b.len)
+	{
+		if (cmp_str(a.word, b.word) < 0)
 			return (1);
-		else
-			i++;
 	}
 	return (0);
 }
 
-t_list	*sort_word(t_list* lst)
-{
-	t_list *head;
-	t_list *current;
-	t_list *tmp;
-
-	head = lst;
-	while (lst)
-	{
-		current = lst->next;
-		while (current)
-		{
-			if (lst->len  == current->len)
-			{
-				if (ifcmp_str(lst->word, current->word) == -1)
-				tmp = lst;
-				lst = current;
-				current = tmp;
-			}
-			current = current->next;
-		}
-		lst = lst->next;
-	}
-	return(head);
-}
-t_list	*sort_len(t_list* lst)
-{
-	t_list *head;
-	t_list *current;
-	t_list *tmp;
-
-	head = lst;
-	while (lst)
-	{
-		current = lst->next;
-		while (current)
-		{
-			if (lst->len > current->len)
-			{
-				tmp = lst;
-				lst = current;
-				current = tmp;
-			}
-			current = current->next;
-		}
-		lst = lst->next;
-	}
-	return(head);
-}
 void print_str(char *s)
 {
 	int i = 0;
@@ -133,28 +71,104 @@ void print_str(char *s)
 	}
 }
 
+int count_words(char *str)
+{
+	int i = 0;
+	int count = 0;
+
+	while (str[i] != '\0')
+	{
+
+		if (!is_wsps(str[i]) && (i == 0 || str[i - 1] == 0))
+		{
+			count++;
+		}
+		if (is_wsps(str[i]))
+			str[i] = 0;
+		i++;
+	}
+	return (count);
+}
+int str_len(char *s)
+{
+	int i = 0;
+	while (s[i] != 0)
+	{
+		i++;
+	}
+	return (i);
+}
+
+void fill_arr(t_words *arr, char *str, int len)
+{
+	int i = 0;
+	int j = 0;
+
+	while (i < len)
+	{
+		if (!is_wsps(str[i]) && (str[i - 1] == 0 || i == 0))
+		{
+			arr[j].len = str_len(&str[i]);
+			arr[j].word = &str[i];
+			j++;
+		}
+		i++;
+	}
+}
+
+void sort(t_words *arr)
+{
+	int i = 0;
+	int j;
+	int t_len;
+	char *t_p;
+
+	while (arr)
+	{
+		j = i + 1;
+		while (arr)
+		{
+			if (!is_less(arr[i], arr[j]))
+			{
+				t_len = arr[i].len;
+				arr[i].len = arr[j].len;
+				arr[j].len = t_len;
+
+				t_p = arr[i].word;
+				arr[i].word = arr[j].word;
+				arr[j].word = t_p;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 int main(int argc, char **argv)
 {
 	int i;
-	t_list *list;
+	int len;
+	t_words *arr;
+	int n_words;
 
 	if (argc == 2)
 	{
-		list = create_list(argv[1]);
-		list = sort_len(list);
-		list = sort_word(list);
+		len = str_len(argv[1]);
+		n_words = count_words(argv[1]);
+		arr = (t_words *)malloc(sizeof(t_words) * n_words);
+		fill_arr(arr, argv[1], len);
 		i = 1;
-		while (list)
+		write(1, arr[0].word, arr[0].len);
+		while (i < n_words)
 		{
-			print(list->word);
-			if(list->len == list->next->len)
-			{
+			if (arr[i].len == arr[i - 1].len)
 				write(1, " ", 1);
-			}
-			write(1, "\n", 1);
-			list = list->next;
-		}
+			else
+				write(1, "\n", 1);
 
+			write(1, arr[i].word, arr[i].len);
+			i++;
+		}
 	}
 	write(1, "\n", 1);
 	return (0);
