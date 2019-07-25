@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 13:17:08 by snechaev          #+#    #+#             */
-/*   Updated: 2019/07/15 15:10:07 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/07/25 09:49:11 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ int cmp_str(char *s1, char *s2)
 
 	while (s1[i] && s2[i])
 	{
-		if ((s1[i] > 'A' && s1[i] < 'Z') && (s2[i] > 'A' && s2[i] < 'Z'))
-		{
+		if ((s1[i] > 'A' && s1[i] < 'Z'))
 			tmp1 = s1[i] + 32;
+		else if ((s2[i] > 'A' && s2[i] < 'Z'))
 			tmp2 = s2[i] + 32;
-		}
 		else
 		{
 			tmp1 = s1[i];
@@ -40,12 +39,12 @@ int cmp_str(char *s1, char *s2)
 		}
 		if (tmp1 != tmp2)
 		{
-			res = tmp2 - tmp1;
+			res = tmp1 - tmp2;
 			return (res);
 		}
 		i++;
 	}
-	res = tmp2 - tmp1;
+	res = tmp1 - tmp2;
 	return (res);
 }
 
@@ -116,17 +115,17 @@ void fill_arr(t_words *arr, char *str, int len)
 	}
 }
 
-void sort(t_words *arr)
+void sort(t_words *arr, int len)
 {
 	int i = 0;
 	int j;
 	int t_len;
 	char *t_p;
 
-	while (arr)
+	while (i < len)
 	{
 		j = i + 1;
-		while (arr)
+		while (j < len )
 		{
 			if (!is_less(arr[i], arr[j]))
 			{
@@ -157,6 +156,7 @@ int main(int argc, char **argv)
 		n_words = count_words(argv[1]);
 		arr = (t_words *)malloc(sizeof(t_words) * n_words);
 		fill_arr(arr, argv[1], len);
+		sort(arr, n_words);
 		i = 1;
 		write(1, arr[0].word, arr[0].len);
 		while (i < n_words)
