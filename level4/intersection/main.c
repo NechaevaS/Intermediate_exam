@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-struct s_node 
+struct s_node
 {
 	void *content;
 	struct s_node *next;
@@ -23,7 +23,8 @@ void print_lst(struct s_node *l)
 }
 void test1()
 {
-    struct s_node 
+	struct s_node *res;
+    struct s_node
     l11 = {(void *)11, 0},
     l12 = {(void *)12, 0},
     l13 = {(void *)13, 0},
@@ -41,12 +42,14 @@ void test1()
     l22.next = &l14,
     print_lst(&l11);
     print_lst(&l21);
-    printf ("test1 yes %lld\n", (long long)(intersection(&l11, &l21)));
+    res = intersection(&l11, &l21);
+    printf ("test 1 yes %d\n", (int)res->content);
 }
 
 void test2()
 {
-    struct s_node 
+	struct s_node *res;
+    struct s_node
     l11 = {(void *)11, 0},
     l12 = {(void *)12, 0},
     l13 = {(void *)13, 0},
@@ -64,11 +67,33 @@ void test2()
 
     print_lst(&l11);
     print_lst(&l21);
-    printf ("test 2 no %lld\n", (long long)(intersection(&l11, &l21)));
+	res = intersection(&l11, &l21);
+    printf ("test 2 no %d\n", (int)res);
+}
+struct s_node *k0 = NULL;
+void test0()
+{
+	struct s_node
+    l11 = {(void *)11, 0},
+    l12 = {(void *)12, 0},
+    l13 = {(void *)13, 0},
+    l14 = {(void *)14, 0},
+    l15 = {(void *)15, 0};
+
+    l11.next = &l12,
+    l12.next = &l13,
+    l13.next = &l14,
+    l14.next = &l15;
+
+	struct s_node *res;
+	struct s_node *k0 = NULL;
+	res = intersection(k0, &l11);
+	printf ("test 0  %d\n", (int)res);
 }
 int main()
 {
     test1();
     test2();
+	test0();
     return (0);
 }

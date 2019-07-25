@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 15:03:48 by snechaev          #+#    #+#             */
-/*   Updated: 2019/07/25 15:11:26 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/07/25 16:46:05 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void *intersection(struct s_node *lst1, struct s_node *lst2)
 			l2 = l2->next;
 		}
 		if (l1)
-				return (l1->content);
+				return (l1);
 	}
     return (res);
 }
