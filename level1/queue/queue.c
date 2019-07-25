@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/16 09:29:38 by exam              #+#    #+#             */
-/*   Updated: 2019/07/17 11:03:45 by snechaev         ###   ########.fr       */
+/*   Created: 2019/07/25 14:10:56 by snechaev          #+#    #+#             */
+/*   Updated: 2019/07/25 14:22:03 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ struct s_queue *init(void)
 
 int isEmpty(struct s_queue *queue)
 {
-	if (queue->first == NULL)
+	if (!queue || !queue->first)
 		return (1);
 	return (0);
 }
@@ -56,18 +56,14 @@ int isEmpty(struct s_queue *queue)
 void enqueue(struct s_queue *queue, void *content)
 {
 	struct s_node *item;
-
+	if (!queue)
+		return ;
 	item =(struct s_node *)malloc(sizeof(struct s_node));
 	item->content = content;
 	if (queue->first == NULL)
-	{
 		queue->first = item;
-	}
 	else
-	{
 		queue->last->next = item;
-		item->next = NULL;
-	}
 	queue->last = item;
 }
 
@@ -76,7 +72,7 @@ void *dequeue(struct s_queue *queue)
 	void	*content;
 	struct s_node	*tmp;
 
-	if (isEmpty(queue) == 1)
+	if (!queue || isEmpty(queue) == 1)
         return (NULL);
 	content = queue->first->content;
 	tmp = queue->first;
@@ -87,11 +83,7 @@ void *dequeue(struct s_queue *queue)
 
 void *peek(struct s_queue *queue)
 {
-	 if (isEmpty(queue) == 1)
+	 if (!queue || isEmpty(queue) == 1)
         return (NULL);
 	 return(queue->first->content);
 }
-
-
-
-
