@@ -17,10 +17,10 @@ int height_tree(struct s_node *root)
         return (0);
     while(root->nodes[i])
     {
-        curr = height_tree(root->nodes[i]);
+        curr = 1 + height_tree(root->nodes[i]);
         if (curr > max)
             max = curr;
         i++;
     }
-    return (max + 1);
+    return (max);
 }
