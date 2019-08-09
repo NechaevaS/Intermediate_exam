@@ -6,107 +6,87 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 14:02:34 by snechaev          #+#    #+#             */
-/*   Updated: 2019/07/30 15:58:44 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/08/09 12:59:51 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <unistd.h>
 #include <stdlib.h>
 
-int ft_strlen(char *s)
+int str_len(char *str)
 {
-    int i = 0;
-    while(s[i] != '\0')
-    {
-        i++;
-    }
-    return (i);
+	int i = 0;
+	while (str[i])
+	{
+		i++;
+	}
+	return (i);
 }
 
-void print_str(char *s, int len)
+int strn_cmp(char *s1, char *s2, int len)
 {
-    int i = 0;
-    while(i < len)
-    {
-        write(1, &s[i], 1);
-        i++;
-    }
-}
-int str_cmp(char *s1, char *s2, int len)
-{
-    int i = 0;
-    while (i < len)
-    {
-        if (s1[i] != s2[i])
-            return(s1[i] - s2[i]);
-        else
-            i++;
-    }
-    i--;
-    return(s1[i] - s2[i]);
+	int i = 0;
+
+	while (i < len && s1[i] && s2[i])
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	if (i == len)
+		return (0);
+	return (s1[i] - s2[i]);
 }
 
-char *find_sub(char *sub, char *s, int *l_sub)
+int check_in(char *sub, char *str, int len_sub)
 {
-    int i = 0;
-    int len;
-    len = ft_strlen(s);
-    while(i + *l_sub <= len)
-    {
-        if(str_cmp(&s[i], sub, *l_sub) == 0)
-        {
-            return (s + i);
-        }
-        else
-            i++;
-    }
-    return (NULL);
+	int i = 0;
+	int len = str_len(str);
+	while (i + len_sub <= len)
+	{
+		if (strn_cmp(sub, &str[i], len_sub) == 0)
+		{
+			return (1);
+		}
+		i++;
+	}
+	return(0);
 }
 
 int main(int argc, char **argv)
 {
-    int all_len;
-    int len;
-    int i = 0;
-    int j;
+	int len_max;
+	int len;
+	int i = 0;
+	int j = 0;
 
-    if (argc < 2)
-    {
-        write(1, "\n", 1);
-        return (0);
-    }
-    all_len = ft_strlen(argv[1]);
-    len = all_len;
 
-    if (argc == 2)
-    {
-        write(1, argv[1], len);
-        write(1, "\n", 1);
-        return (0);
-    }
-    while (len > 0)
-    {
-       
-        j = 0;
-        while(j + len <= all_len)
-        {
-            i = 2;
-            while(i < argc)
-            {
-                if (find_sub(&argv[1][j], argv[i], &len) != NULL)
-                    i++;
-                else
-                    break; 
-            }
-            if (i == argc)
-            {
-                print_str(&argv[1][j], len);
-                write(1, "\n", 1);
-                return (0);
-            }
-            j++;
-        }
-        len--;
-    }
-    write(1, "\n", 1);
-    return (0);
+	if (argc >= 2)
+	{
+		len_max = str_len(argv[1]);
+		len = len_max;
+		while (len >= 0)
+		{
+			i = 0;
+			while (i + len <= len_max)
+			{
+				j = 2;
+				while (j < argc)
+				{
+					if (!check_in(&argv[1][i], argv[j], len))
+						break;
+					j++;
+				}
+				if (j == argc)
+				{
+					write(1, &argv[1][i], len);
+					write(1, "\n", 1);
+					return (0);
+				}
+				i++;
+			}
+			len--;
+		}
+	}
+	write(1, "\n", 1);
 }

@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 15:03:48 by snechaev          #+#    #+#             */
-/*   Updated: 2019/07/25 16:46:05 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/08/09 12:56:53 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,23 @@ struct s_node
 
 void *intersection(struct s_node *lst1, struct s_node *lst2)
 {
-    void *res = 0;
-    struct s_node *l1;
-    struct s_node *l2;
+	struct s_node *one;
+	struct s_node *two;
 
-	if (lst1 && lst2)
+	if (!lst1 || !lst2)
+		return (0);
+	one = lst1;
+	while (one)
 	{
-		l1 = lst1;
-		l2 = lst2;
-		while(l1 != l2)
+		two = lst2;
+		while (two)
 		{
-			if (!l1 && l2)
-				l1 = lst2;
-			if (!l2 && l1)
-				l2 = lst1;
-			l1 = l1->next;
-			l2 = l2->next;
+			if (one == two)
+				return (one);
+			two = two->next;
 		}
-		if (l1)
-				return (l1);
+		one = one->next;
 	}
-    return (res);
+	return (0);
 }
+
