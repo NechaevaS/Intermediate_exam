@@ -10,37 +10,58 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-struct s_node {
-	int           value;
+struct s_node
+{
+	int value;
 	struct s_node *right;
 	struct s_node *left;
 };
 
-void processing(struct s_node *bst, struct s_node **head)
+struct s_node *find_max(struct s_node *bst)
 {
-    struct s_node *tmp;
+	while(bst->right)
+		bst = bst->right;
+	return (bst);
+}
 
-    if (!bst)
-        return ;
-    processing(bst->left, head);
-    if (!(bst->left) && !(bst->right) && !(*head))
-    {
-        *head = bst;
-        (*head)->left = *head;
-        (*head)->right = *head;
-        return ;
-    }
-    tmp = bst->right;
-    bst->right = *head;
-    bst->left = (*head)->left;
-    (*head)->left->right = bst;
-    (*head)->left = bst;
-    processing(tmp, head);
+struct s_node *find_min(struct s_node *bst)
+{
+	while(bst->left)
+		bst = bst->left;
+	return (bst);
+}
+
+void traverce(struct s_node *bst, struct s_node *min, struct s_node *max)
+{
+	static struct s_node *tmp;
+
+	if (!bst)
+		return ;
+
+	if (bst != min)
+		traverce(bst->left, min, max);
+	if (tmp)
+	{
+		bst->left = tmp;
+		tmp->right = bst;
+	}
+	tmp = bst;
+	if (bst != max)
+		traverce(bst->right, min, max);
 }
 
 struct s_node *convert_bst(struct s_node *bst)
 {
-    struct s_node *head = 0;   
-    processing(bst, &head);
-    return (head);
+	struct s_node *min;
+	struct s_node *max;
+
+	if (!bst)
+		return (0);
+	min = find_min(bst);
+	max = find_max(bst);
+
+	min->left = max;
+	max->right = min;
+	traverce(bst, min, max);
+	return (min);
 }
