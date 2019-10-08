@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 13:21:17 by snechaev          #+#    #+#             */
-/*   Updated: 2019/08/19 17:26:23 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/10/08 15:11:44 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,6 @@ void print_sum(char *summ, int sign)
 {
 	int i = 0;
 
-	if (sign)
-		write(1, "-", 1);
 	while (summ[i] == '0' && summ[i])
 		i++;
 	if (summ[i] == '\0')
@@ -113,6 +111,8 @@ void print_sum(char *summ, int sign)
 		write(1, "0", 1);
 		return;
 	}
+	if (sign)
+		write(1, "-", 1);
 	while (summ[i])
 	{
 		write(1, &summ[i], 1);

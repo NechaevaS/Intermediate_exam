@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ord_alphlong.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: exam <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/15 13:05:44 by snechaev          #+#    #+#             */
-/*   Updated: 2019/07/25 09:50:23 by snechaev         ###   ########.fr       */
+/*   Created: 2019/09/24 10:42:34 by exam              #+#    #+#             */
+/*   Updated: 2019/09/24 10:42:36 by exam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 typedef struct
 {
-	char			*word;
-	int				len;
-}					t_words;
+    char    *w;
+    int     len;
+}           t_word;
 
 #endif

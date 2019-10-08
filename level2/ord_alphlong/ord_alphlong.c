@@ -3,158 +3,157 @@
 /*                                                        :::      ::::::::   */
 /*   ord_alphlong.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: exam <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/15 13:17:08 by snechaev          #+#    #+#             */
-/*   Updated: 2019/08/05 14:46:22 by snechaev         ###   ########.fr       */
+/*   Created: 2019/09/24 09:58:21 by exam              #+#    #+#             */
+/*   Updated: 2019/09/24 09:58:23 by exam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <unistd.h>
 #include "ord_alphlong.h"
 
 int is_wsps(char c)
 {
-	return (c == ' ' || c == '\t');
+    return (c == ' ' || c == '\t');
 }
 
-int count_word(char *str)
+int count_words(char *p)
 {
-	int i = 0;
-	int count = 0;
-	while (str[i])
-	{
-		if (!is_wsps(str[i]) && (i == 0 || is_wsps(str[i - 1])))
-			count++;
-		i++;
-	}
-	return (count);
+    int count = 0;
+    int i = 0;
+
+    while(p[i])
+    {
+        if ((!is_wsps(p[i]) && i == 0) || (!is_wsps(p[i]) && is_wsps(p[i - 1])))
+            count++;
+        i++;
+    }
+    return (count);
 }
-void fill_words(char *str, t_words *words)
+
+void fill_arr(t_word *w, char *s)
 {
-	int w_len = 0;
-	int i = 0;
-	int j = 0;
-	while (str[i] != '\0')
-	{
-		if (!is_wsps(str[i]) && (i == 0 || str[i - 1] == 0))
-		{
-			w_len = 0;
-			words[j].word = &str[i];
-			while (str[i] && !is_wsps(str[i]))
-			{
-				w_len++;
-				i++;
-			}
-			words[j].len = w_len;
-			j++;
-		}
-		if (is_wsps(str[i]))
-			str[i] = 0;
-		i++;
-	}
+    int i = 0;
+    int j = 0;
+    int len;
+
+    while (s[i])
+    {
+        if ((!is_wsps(s[i]) && i == 0) || (!is_wsps(s[i]) && is_wsps(s[i - 1])))
+        {
+           len = 0;
+            w[j].w = &s[i];
+            while (!is_wsps(s[i]) && s[i])
+            {
+                i++;
+                len++;
+            }
+            w[j].len = len;
+            j++;
+        }
+        i++;
+    }
 }
 
 int str_cmp(char *s1, char *s2)
 {
-	int i = 0;
-	char c1;
-	char c2;
+    int i = 0;
+    char c1;
+    char c2;
 
-	while (s1[i] && s2[i])
-	{
-		if (s1[i] >= 'A' && s1[i] <= 'Z')
-			c1 = s1[i] + 32;
-		else
-			c1 = s1[i];
-		if (s2[i] >= 'A' && s2[i] <= 'Z')
-			c2 = s2[i] + 32;
-		else
-			c2 = s2[i];
-
-		if (c1 != c2)
-			return (c1 - c2);
-		else
-			i++;
-	}
-	return (0);
+    while (s1 && s2)
+    {
+        if (s1[i] >= 'A' && s1[i] <= 'Z')
+            c1 = s1[i] + 32;
+        else
+            c1 = s1[i];
+        if (s2[i] >= 'A' && s2[i] <= 'Z')
+            c2 = s2[i] + 32;
+        else
+            c2 = s2[i];
+        if (c1 != c2)
+            return (c1 - c2);
+        i++;
+    }
+    return (c1 - c2);
 }
 
-int is_less(t_words w1, t_words w2)
+int is_less(t_word w1, t_word w2)
 {
-	if (w1.len < w2.len)
-		return (1);
-	if (w1.len == w2.len)
-	{
-		if (str_cmp(w1.word, w2.word) <= 0)
-			return (1);
-	}
-	return (0);
+    if (w1.len < w2.len)
+        return (1);
+    if (w1.len == w2.len)
+    {
+        if(str_cmp(w1.w, w2.w) <= 0)
+            return (1);
+    }
+    return(0);
+
 }
-void sort_words(t_words *words, int len)
+void sort_arr(t_word *word, int n_words)
 {
-	int tmp;
-	char *t = NULL;
-	int i = 0;
-	int j = 0;
+    int i = 0;
+    int j;
+    char *tmp;
+    int t;
 
-	while (i < len)
-	{
-		j = i + 1;
-		while (j < len)
-		{
-			if (!(is_less(words[i], words[j])))
-			{
-
-				tmp = words[i].len;
-				words[i].len = words[j].len;
-				words[j].len = tmp;
-				t = words[i].word;
-				words[i].word = words[j].word;
-				words[j].word = t;
-			}
-			j++;
-		}
-		i++;
-	}
+    while (i < n_words)
+    {
+        j = i + 1;
+        while (j < n_words)
+        {
+            if (!is_less(word[i], word[j]))
+            {
+                tmp = word[i].w;
+                word[i].w = word[j].w;
+                word[j].w = tmp;
+                t = word[i].len;
+                word[i].len = word[j].len;
+                word[j].len = t;
+            }
+            j++;
+        }
+        i++;
+    }
 }
-void print(t_words *words, int n_words)
+
+void print_arr(t_word *w, int n_words)
 {
-	int n = 0;
-	int i = 0;
-	while (n < n_words)
-	{
-		i = 0;
-		while (words[n].word[i])
-		{
-			write(1, &words[n].word[i], 1);
-			i++;
-		}
-		if ( n != n_words - 1 && words[n].len == words[n + 1].len)
-			write(1, " ", 1);
-		else
-			write(1, "\n", 1);
-		n++;
-	}
+    int len;
+    int i = 0;
+    
+    len = w[i].len;
+    while (i < n_words)
+    {
+        write (1, w[i].w, w[i].len);
+        if (i + 1 <= n_words && w[i + 1].len == len)
+            write (1, " ", 1);
+        else
+        {
+            write (1, "\n", 1);
+            len = w[i + 1].len;
+        }
+        i++;
+    }
 }
 
-int main(int argc, char **argv)
+int main (int argc, char **argv)
 {
-	char *str;
-	t_words *words;
-	int n_words = 0;
+    int n_words;
+    t_word  *word;
 
-	if (argc != 2)
-	{
-		write(1, "\n", 1);
-		return (0);
-	}
-
-	str = argv[1];
-
-	n_words = count_word(str);
-	words = (t_words *)malloc(sizeof(t_words) * n_words);
-	fill_words(str, words);
-	sort_words(words, n_words);
-	print(words, n_words);
-	return (0);
+    if (argc != 2)
+    {
+        write(1, "\n", 1);
+        return (0);
+    }
+    n_words = count_words(argv[1]);
+    word = (t_word*)malloc(sizeof(t_word) * n_words);
+    fill_arr(word, argv[1]);
+    sort_arr(word, n_words);
+    print_arr(word, n_words);
+    return (0);
 }
+
