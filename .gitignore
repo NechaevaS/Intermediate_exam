@@ -1,0 +1,24 @@
+
+.vscode
+._*
+*.o
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Junk files
+*.DS_Store
+.AppleDouble
+.LSOverride
+.nfs*
