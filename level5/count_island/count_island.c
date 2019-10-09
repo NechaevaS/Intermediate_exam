@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 11:15:47 by exam              #+#    #+#             */
-/*   Updated: 2019/10/08 13:52:52 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/10/08 17:51:22 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,30 @@ t_map *init_map(int len)
     map->num_is = 0;
     map->m = (char **)malloc(sizeof(char *) * 1024);
     return (map);
+}
+
+int check_map(t_map *map)
+{
+    int i;
+    int j = 0;
+
+    while(j < map->h)
+    {
+        i = 0;
+        while(i < map->w)
+        {
+            if ((map->m[j][i] == '.' || map->m[j][i] == 'X' ||
+                map->m[j][i] == '\n') && map->m[j][map->w - 1] == '\n')
+                i++;
+            else
+            {
+                write(1, "\n", 1);
+                return (0);
+            }
+        }
+        j++;
+    }
+    return (1);
 }
 
 void print_map(t_map *map)
@@ -113,14 +137,14 @@ int main(int argc, char **argv)
 
     if (argc != 2)
     {
-        write(1, "error argv\n", 11);
+        write(1, "\n", 1);
         return(-1);
     }
     fd = open(argv[1], O_RDONLY);
     if (fd < 0)
     {
-        write(1, "open error\n", 11);
-        return (-1);
+        write(1, "\n", 1);
+        return (1);
     }
     char w[1024] = {0}; 
     res = read(fd, w, 1024);
@@ -136,6 +160,8 @@ int main(int argc, char **argv)
         i++;
     }
     map->h = i;
+    if(check_map(map) == 0)
+        return (1);
     flood_fill(map);
     print_map(map);
     close(fd);
