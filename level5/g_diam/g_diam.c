@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 15:36:34 by snechaev          #+#    #+#             */
-/*   Updated: 2019/10/10 17:36:08 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/10/10 18:09:48 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int find_max(int **g, int n)
 
     while (j < n)
     {
-        cur = find_max_help(g, n, j);
+        cur = find_max_help(g, n, j) + 1;
         if (cur > m_cur)
                 m_cur = cur;
         j++;
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     w = parse(argv[1], nodes, &max);
     printf("%d\n", max);
     g = create_graph(w, max + 1, nodes);
-    res = find_max(g, max);
+    res = find_max(g, max) + 1;
     printf("%d\n", res);
     return (0);
 }
