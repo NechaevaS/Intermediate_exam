@@ -6,7 +6,7 @@
 /*   By: snechaev <snechaev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 15:36:34 by snechaev          #+#    #+#             */
-/*   Updated: 2019/10/10 17:00:05 by snechaev         ###   ########.fr       */
+/*   Updated: 2019/10/10 17:36:08 by snechaev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int ft_atoi(char **s)
     return (res);
 }
 
-int *parse(char *s, int n, int *max, int *min)
+int *parse(char *s, int n, int *max)
 {
     int *w;
     int i = 0;
@@ -54,39 +54,12 @@ int *parse(char *s, int n, int *max, int *min)
     while (*s)
     {
         w[i] = ft_atoi(&s);
-        if (i == 0)
-            *min = w[i];
         if (w[i] > *max)
             *max = w[i];
-        if (w[i] < *min)
-            *min = w[i];
         i++;
     }
     return (w);
 }
-
-static int m;
-// void find_max(int **g, int n, int cur, int j)
-// {
-//     int i = 0;
-
-//     i = 0;
-//     while (i < n)
-//     {
-//         if (g[j][i])
-//         {
-//             cur++;
-//             if (cur > m)
-//                 m = cur;
-//             g[j][i] = 0;
-//             g[i][j] = 0;
-//             find_max(g, n, cur, i);
-//             g[j][i] = 1;
-//             g[i][j] = 1;
-//         }
-//         i++;
-//     }
-// }
 
 int **create_graph(int *arr, int max, int nodes)
 {
@@ -122,41 +95,44 @@ int **create_graph(int *arr, int max, int nodes)
     print_graph(g, max);
     return (g);
 }
-static int m;
-void find_max_help(int **g, int n, int cur, int j, int min)
+
+int find_max_help(int **g, int n, int j)
 {
     int i = 0;
+    int cur;
+    int m_cur = 0;
 
-    if (m == 0 && j > min)
-        return;
     while (i < n)
     {
         if (g[j][i])
         {
-            cur++;
-            if (cur > m)
-                m = cur;
             g[j][i] = 0;
             g[i][j] = 0;
-            find_max_help(g, n, cur, i, min);
+            cur = find_max_help(g, n, i) + 1;
+            if (cur > m_cur)
+                m_cur = cur;
             g[j][i] = 1;
             g[i][j] = 1;
-         //   cur = 2;
         }
         i++;
     }
+    return (m_cur);
 }
 
-void find_max(int **g, int n, int min)
+int find_max(int **g, int n)
 {
     int j = 0;
+    int cur;
+    int m_cur = 0;
 
-    m = 0;
     while (j < n)
     {
-        find_max_help(g, n, 1, j, min);
+        cur = find_max_help(g, n, j);
+        if (cur > m_cur)
+                m_cur = cur;
         j++;
     }
+    return (m_cur);
 }
 
 int main(int argc, char **argv)
@@ -165,8 +141,8 @@ int main(int argc, char **argv)
     int i = 0;
     int nodes = 0;
     int max = 0;
-    int min = 0;
     int **g;
+    int res;
 
     if (argc != 2)
         return (1);
@@ -176,11 +152,10 @@ int main(int argc, char **argv)
             nodes++;
         i++;
     }
-    w = parse(argv[1], nodes, &max, &min);
+    w = parse(argv[1], nodes, &max);
     printf("%d\n", max);
-    printf("%d\n", min);
     g = create_graph(w, max + 1, nodes);
-    find_max(g, max, min);
-    printf("%d\n", m);
+    res = find_max(g, max);
+    printf("%d\n", res);
     return (0);
 }
