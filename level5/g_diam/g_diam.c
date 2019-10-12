@@ -10,23 +10,45 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "g_diam.h"
-#include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+void put_nbr(int n)
+{
+    char c;
+    if (n == 0)
+        return;
+    put_nbr(n / 10);
+    c = n % 10 + '0';
+    write (1, &c, 1); 
+}
 
-void print_graph(int **g, int n)
+void print_graph(int n, int g[n][n])
 {
     int i = 0;
     int j;
+    char c;
 
     while (i < n)
     {
         j = 0;
         while (j < n)
         {
-            printf("%d ", g[i][j]);
+            c = g[i][j] + '0';
+            write(1, &c, 1);
             j++;
         }
-        printf("\n");
+        write(1, "\n", 1);
+        i++;
+    }
+}
+
+void fill_arr(int *arr, int n, int val)
+{
+    int i = 0;
+
+    while(i < n)
+    {
+        arr[i] = val;
         i++;
     }
 }
@@ -61,25 +83,18 @@ int *parse(char *s, int n, int *max)
     return (w);
 }
 
-int **create_graph(int *arr, int max, int nodes)
+void create_graph(int *arr, int size, int g[size][size], int nodes)
 {
-    int **g;
     int i = 0;
     int j = 0;
     int k = 0;
 
-    g = (int **)malloc(sizeof(int *) * max);
-    while (i < max)
+    while (i < size)
     {
-        j = 0;
-        g[i] = (int *)malloc(sizeof(int) * max);
-        while (j < max)
-        {
-            g[i][j] = 0;
-            j++;
-        }
+        fill_arr(g[i], size, 0);
         i++;
     }
+    fill_arr(g[size - 1], size - 1, 1);
 
     while (k + 1 < nodes)
     {
@@ -92,46 +107,27 @@ int **create_graph(int *arr, int max, int nodes)
         }
         k = k + 2;
     }
-    print_graph(g, max);
-    return (g);
+//  print_graph(size, g);
 }
 
-int find_max_help(int **g, int n, int j)
+int find_max(int size, int g[size][size], int j, int visited[size])
 {
     int i = 0;
     int cur;
     int m_cur = 0;
 
-    while (i < n)
+    visited[j] = 1;
+    while (i < size - 1)
     {
-        if (g[j][i])
+        if (g[j][i] && !visited[i])
         {
-            g[j][i] = 0;
-            g[i][j] = 0;
-            cur = find_max_help(g, n, i) + 1;
+            cur = find_max(size, g, i, visited) + 1;
             if (cur > m_cur)
                 m_cur = cur;
-            g[j][i] = 1;
-            g[i][j] = 1;
         }
         i++;
     }
-    return (m_cur);
-}
-
-int find_max(int **g, int n)
-{
-    int j = 0;
-    int cur;
-    int m_cur = 0;
-
-    while (j < n)
-    {
-        cur = find_max_help(g, n, j) + 1;
-        if (cur > m_cur)
-                m_cur = cur;
-        j++;
-    }
+    visited[j] = 0;
     return (m_cur);
 }
 
@@ -140,22 +136,34 @@ int main(int argc, char **argv)
     int *w;
     int i = 0;
     int nodes = 0;
-    int max = 0;
-    int **g;
+    int max_node = -1;
     int res;
-
+    int size;
+    
     if (argc != 2)
-        return (1);
+    {
+        write(1, "\n" ,1);
+        return(1);
+    }
     while (argv[1][i])
     {
         if (i == 0 || argv[1][i - 1] == ' ' || argv[1][i - 1] == '-')
             nodes++;
         i++;
     }
-    w = parse(argv[1], nodes, &max);
-    printf("%d\n", max);
-    g = create_graph(w, max + 1, nodes);
-    res = find_max(g, max) + 1;
-    printf("%d\n", res);
+    w = parse(argv[1], nodes, &max_node);
+    if (max_node == -1)
+    {
+        write(1, "\n" ,1);
+        return(1);
+    }
+    size = max_node + 2;
+    int visited[size];
+    int g[size][size];
+    create_graph(w, size, g, nodes);
+    fill_arr(visited, size, 0);
+    res = find_max(size, g, max_node + 1, visited);
+    put_nbr(res);
+    write(1, "\n", 1);
     return (0);
 }
