@@ -5,7 +5,7 @@
 
 # Executables
 *.exe
-*.out
+a.out
 *.app
 *.i*86
 *.x86_64
