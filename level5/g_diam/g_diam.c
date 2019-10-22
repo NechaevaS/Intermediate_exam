@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stdlib.h>
-# include <unistd.h>
+#include <stdlib.h>
+#include <unistd.h>
 void put_nbr(int n)
 {
     char c;
@@ -19,7 +19,7 @@ void put_nbr(int n)
         return;
     put_nbr(n / 10);
     c = n % 10 + '0';
-    write (1, &c, 1); 
+    write(1, &c, 1);
 }
 
 void print_graph(int n, int g[n][n])
@@ -42,11 +42,11 @@ void print_graph(int n, int g[n][n])
     }
 }
 
-void fill_arr(int *arr, int n, int val)
+void fill_arr(char *arr, int n, int val)
 {
     int i = 0;
 
-    while(i < n)
+    while (i < n)
     {
         arr[i] = val;
         i++;
@@ -83,7 +83,7 @@ int *parse(char *s, int n, int *max)
     return (w);
 }
 
-void create_graph(int *arr, int size, int g[size][size], int nodes)
+void create_graph(int *arr, int size, char g[size][size], int nodes)
 {
     int i = 0;
     int j = 0;
@@ -107,10 +107,9 @@ void create_graph(int *arr, int size, int g[size][size], int nodes)
         }
         k = k + 2;
     }
-//  print_graph(size, g);
 }
 
-int find_max(int size, int g[size][size], int j, int visited[size])
+int find_max(int size, char g[size][size], int j, char visited[size])
 {
     int i = 0;
     int cur;
@@ -139,11 +138,11 @@ int main(int argc, char **argv)
     int max_node = -1;
     int res;
     int size;
-    
+
     if (argc != 2)
     {
-        write(1, "\n" ,1);
-        return(1);
+        write(1, "\n", 1);
+        return (1);
     }
     while (argv[1][i])
     {
@@ -154,12 +153,12 @@ int main(int argc, char **argv)
     w = parse(argv[1], nodes, &max_node);
     if (max_node == -1)
     {
-        write(1, "\n" ,1);
-        return(1);
+        write(1, "\n", 1);
+        return (1);
     }
     size = max_node + 2;
-    int visited[size];
-    int g[size][size];
+    char visited[size];
+    char g[size][size];
     create_graph(w, size, g, nodes);
     fill_arr(visited, size, 0);
     res = find_max(size, g, max_node + 1, visited);
