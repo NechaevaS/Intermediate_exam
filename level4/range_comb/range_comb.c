@@ -1,5 +1,6 @@
 
 #include <stdlib.h>
+#include <stdio.h>
 
 
 int factorial(int n)
@@ -14,7 +15,7 @@ int factorial(int n)
 	return (f);
 }
 
-void traverse(int *w, int n, int curr, int **res, int *pos)
+void traverse(int *w, int n, int curr, int **res, int *pos, int help[n])
 {
 	int i = 0;
 	if (curr == n)
@@ -30,11 +31,12 @@ void traverse(int *w, int n, int curr, int **res, int *pos)
 	}
 	while (i < n)
 	{
-		if (w[i] == -1)
+		if (!help[i])
 		{
-			w[i] = curr;
-			traverse(w, n, curr + 1, res, pos);
-			w[i] = -1;
+			help[i] = 1;
+			w[curr] = i;
+			traverse(w, n, curr + 1, res, pos, help);
+			help[i] = 0;
 		}
 		i++;
 	}
@@ -46,6 +48,7 @@ int    **range_comb(int n)
 	int *w;
 	int pos = 0;
 	int i = 0;
+	int help[n];
 
 	if (n <= 0)
 		return NULL;
@@ -55,8 +58,9 @@ int    **range_comb(int n)
 		w[i] = -1;
 		i++;
 	}
-	res = (int **)malloc(sizeof(int *) * factorial(n));
-	traverse(w, n, 0, res, &pos);
+	res = (int **)malloc(sizeof(int *) * factorial(n) +1);
+	res[factorial(n)] = NULL;
+	traverse(w, n, 0, res, &pos, help);
 	free(w);
 	return (res);
 }
