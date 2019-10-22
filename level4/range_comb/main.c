@@ -1,10 +1,10 @@
 #include <stdio.h>
 
 int    **range_comb(int n);
-
+int factorial(int n);
 int main()
 {
-    int n = 4;
+    int n = 3;
     int i = 0;
     int j = 0;
     int **res;
